@@ -11,10 +11,11 @@ public class Jane {
         System.out.println(greeting);
 
         int count = 0;
-        String list[] = new String[100];
+        Task list[] = new Task[100];
 
         while (true) {
             String input = scanner.nextLine();
+            String[] words = input.split("\\s+"); // split input line into its separate words
 
             if (input.equals("bye")) {
                 String bye = "____________________________________________________________\n" +
@@ -28,12 +29,29 @@ public class Jane {
                 System.out.println("____________________________________________________________\n");
                 for (int i = 0; i < 100; i++) {
                     if (list[i] != null) {
-                        System.out.println((i + 1) + ". " + list[i] + "\n");
+                        System.out.println((i + 1) + ". [" + list[i].getStatusIcon() + "] " +
+                                list[i].getDescription() + "\n");
                     }
                 }
                 System.out.println("____________________________________________________________\n");
+            } else if (words[0].equals("mark")) {
+                int index = Integer.parseInt(words[1]) - 1;
+                list[index].markAsDone();
+                System.out.println("____________________________________________________________\n" +
+                    "Nice! I've marked this task as done:\n");
+                String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
+                System.out.println(taskLine + "\n");
+                System.out.println("____________________________________________________________\n");
+            } else if (words[0].equals("unmark")) {
+                int index = Integer.parseInt(words[1]) - 1;
+                list[index].markAsUndone();
+                System.out.println("____________________________________________________________\n" +
+                        "OK, I've marked this task as not done yet:\n");
+                String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
+                System.out.println(taskLine + "\n");
+                System.out.println("____________________________________________________________\n");
             } else {
-                list[count] = input;
+                list[count] = new Task(input);
                 count++;
 
                 String text = "____________________________________________________________\n" +
