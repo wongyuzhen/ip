@@ -10,6 +10,9 @@ public class Jane {
                 "____________________________________________________________\n";
         System.out.println(greeting);
 
+        int count = 0;
+        String list[] = new String[100];
+
         while (true) {
             String input = scanner.nextLine();
 
@@ -21,11 +24,25 @@ public class Jane {
                 break;
             }
 
-            String text = "____________________________________________________________\n" +
-                    input +
-                    "\n" +
-                    "____________________________________________________________\n";
-            System.out.println(text);
+            if (input.equals("list")) {
+                System.out.println("____________________________________________________________\n");
+                for (int i = 0; i < 100; i++) {
+                    if (list[i] != null) {
+                        System.out.println((i + 1) + ". " + list[i] + "\n");
+                    }
+                }
+                System.out.println("____________________________________________________________\n");
+            } else {
+                list[count] = input;
+                count++;
+
+                String text = "____________________________________________________________\n" +
+                        "added: " +
+                        input +
+                        "\n" +
+                        "____________________________________________________________\n";
+                System.out.println(text);
+            }
         }
 
         scanner.close();
