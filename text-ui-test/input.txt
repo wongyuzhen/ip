@@ -1,8 +1,17 @@
 todo read book
-deadline return book /by Sunday
-event project meeting /from Mon 2pm /to 4pm
+todo
+deadline submit report /by Monday
+deadline /by Friday
+event team meeting /from Mon 2pm /to 4pm
+event party /from 8pm
+event party /to 10pm
+deadline invalidtask /by
+foo unknown command
 list
 mark 1
-unmark 2
-list
+mark 10
+mark
+unmark 1
+unmark 0
+unmark abc
 bye
