@@ -14,7 +14,7 @@ public class Jane {
         int count = 0;
         Task[] list = new Task[100];
 
-        while (true) {
+        while (scanner.hasNext()) {
             String input = scanner.nextLine();
             String[] words = input.split("\\s+"); // split input line into its separate words
 
@@ -28,10 +28,10 @@ public class Jane {
 
             if (input.equals("list")) {
                 System.out.println("____________________________________________________________\n"
-                    + "Here are the tasks in your list:\n");
+                    + "Here are the tasks in your list:");
                 for (int i = 0; i < 100; i++) {
                     if (list[i] != null) {
-                        System.out.println((i + 1) + ". " + list[i].toString() + "\n");
+                        System.out.println((i + 1) + ". " + list[i].toString());
                     }
                 }
                 System.out.println("____________________________________________________________\n");
@@ -39,17 +39,17 @@ public class Jane {
                 int index = Integer.parseInt(words[1]) - 1;
                 list[index].markAsDone();
                 System.out.println("____________________________________________________________\n" +
-                    "Nice! I've marked this task as done:\n");
+                    "Nice! I've marked this task as done:");
                 String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
-                System.out.println(taskLine + "\n");
+                System.out.println(taskLine);
                 System.out.println("____________________________________________________________\n");
             } else if (words[0].equals("unmark")) {
                 int index = Integer.parseInt(words[1]) - 1;
                 list[index].markAsUndone();
                 System.out.println("____________________________________________________________\n" +
-                        "OK, I've marked this task as not done yet:\n");
+                        "OK, I've marked this task as not done yet:");
                 String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
-                System.out.println(taskLine + "\n");
+                System.out.println(taskLine);
                 System.out.println("____________________________________________________________\n");
             } else {
                 String[] inputArgs = input.split("\\s?/");
