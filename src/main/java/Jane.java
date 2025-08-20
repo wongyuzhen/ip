@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -11,8 +12,7 @@ public class Jane {
                 "____________________________________________________________\n";
         System.out.println(greeting);
 
-        int count = 0;
-        Task[] list = new Task[100];
+        ArrayList<Task> list = new ArrayList<>();
 
         while (scanner.hasNext()) {
             String input = scanner.nextLine();
@@ -31,10 +31,8 @@ public class Jane {
                 if (input.equals("list")) {
                     System.out.println("____________________________________________________________\n"
                             + "Here are the tasks in your list:");
-                    for (int i = 0; i < 100; i++) {
-                        if (list[i] != null) {
-                            System.out.println((i + 1) + ". " + list[i].toString());
-                        }
+                    for (int i = 0; i < list.size(); i++) {
+                        System.out.println((i + 1) + ". " + list.get(i));
                     }
                     System.out.println("____________________________________________________________\n");
                 } else if (words[0].equals("mark") || words[0].equals("unmark")) {
@@ -48,25 +46,47 @@ public class Jane {
                     } catch (NumberFormatException e) {
                         throw new JaneException("Invalid task number: " + words[1]);
                     }
-                    if (index < 0 || index >= count || list[index] == null) {
+                    if (index < 0 || index >= list.size()) {
                         throw new JaneException("Task number " + (index + 1) + " does not exist.");
                     }
 
+                    Task task = list.get(index);
                     if (words[0].equals("mark")) {
-                        list[index].markAsDone();
+                        task.markAsDone();
                         System.out.println("____________________________________________________________\n" +
-                                "Nice! I've marked this task as done:");
-                        String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
-                        System.out.println(taskLine);
-                        System.out.println("____________________________________________________________\n");
+                                "Nice! I've marked this task as done:\n" +
+                                task + "\n" +
+                                "____________________________________________________________\n");
                     } else {
-                        list[index].markAsUndone();
+                        task.markAsUndone();
                         System.out.println("____________________________________________________________\n" +
-                                "OK, I've marked this task as not done yet:");
-                        String taskLine = "[" + list[index].getStatusIcon() + "] " + list[index].getDescription();
-                        System.out.println(taskLine);
-                        System.out.println("____________________________________________________________\n");
+                                "OK, I've marked this task as not done yet:\n" +
+                                task + "\n" +
+                                "____________________________________________________________\n");
                     }
+                } else if (words[0].equals("delete")) {
+                    if (words.length < 2) {
+                        throw new JaneException("Please specify a task number.");
+                    }
+
+                    int index;
+                    try {
+                        index = Integer.parseInt(words[1]) - 1;
+                    } catch (NumberFormatException e) {
+                        throw new JaneException("Invalid task number: " + words[1]);
+                    }
+
+                    if (index < 0 || index >= list.size()) {
+                        throw new JaneException("Task number " + (index + 1) + " does not exist.");
+                    }
+
+                    Task removed = list.remove(index);
+                    System.out.println("____________________________________________________________\n" +
+                            "Noted. I've removed this task:\n" +
+                            removed + "\n" +
+                            "Now you have " + list.size() + " tasks in the list.\n" +
+                            "____________________________________________________________\n");
+
                 } else {
                     String[] inputArgs = input.split("\\s?/");
                     String[] mainCmd = inputArgs[0].split("\\s+", 2);
@@ -90,44 +110,38 @@ public class Jane {
                         throw new JaneException("Unknown task type: " + mainCmd[0]);
                     }
 
+                    Task task;
+                    
                     switch (type) {
                         case TODO:
-                            // assert mainCmd.length == 1;
-                            list[count] = new Task(mainCmd[1]);
+                            task = new Task(mainCmd[1]);
                             break;
                         case DEADLINE:
-                            String deadlineDate = "";
-                            if (flags.containsKey("by")) {
-                                deadlineDate = flags.get("by");
+                            String by = flags.getOrDefault("by", "");
+                            if (by.isEmpty()) {
+                                throw new JaneException("Deadline task must have a /by date.");
                             }
-                            list[count] = new Task(mainCmd[1], deadlineDate);
+                            task = new Task(mainCmd[1], by);
                             break;
                         case EVENT:
-                            String fromTime = "";
-                            String toTime = "";
-                            if (flags.containsKey("from")) {
-                                fromTime = flags.get("from");
+                            String from = flags.get("from");
+                            String to = flags.get("to");
+                            if (from == null || to == null) {
+                                throw new JaneException("Event task must have both /from and /to times.");
                             }
-                            if (flags.containsKey("to")) {
-                                toTime = flags.get("to");
-                            }
-
-                            if (fromTime.isEmpty() || toTime.isEmpty()) {
-                                throw new JaneException("Both /from and /to must be provided for an EVENT task.");
-                            }
-
-                            list[count] = new Task(mainCmd[1], fromTime, toTime);
+                            task = new Task(mainCmd[1], from, to);
                             break;
+                        default:
+                            throw new JaneException("Unhandled task type: " + mainCmd[0]);
                     }
 
-                    String text = "____________________________________________________________\n" +
-                            "Got it. I've added this task:\n" +
-                            list[count].toString() +
-                            "\nNow you have " + (count + 1) + " tasks in the list.\n" +
-                            "____________________________________________________________\n";
-                    System.out.println(text);
+                    list.add(task);
 
-                    count++;
+                    System.out.println("____________________________________________________________\n" +
+                            "Got it. I've added this task:\n" +
+                            task + "\n" +
+                            "Now you have " + list.size() + " tasks in the list.\n" +
+                            "____________________________________________________________\n");
                 }
             } catch (JaneException e) {
                 System.out.println("____________________________________________________________");
