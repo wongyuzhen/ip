@@ -12,7 +12,8 @@ public class Jane {
                 "____________________________________________________________\n";
         System.out.println(greeting);
 
-        ArrayList<Task> list = new ArrayList<>();
+        Storage storage = new Storage("./data/jane.txt");
+        ArrayList<Task> list = storage.load();
 
         while (scanner.hasNext()) {
             String input = scanner.nextLine();
@@ -64,6 +65,7 @@ public class Jane {
                                 task + "\n" +
                                 "____________________________________________________________\n");
                     }
+                    storage.save(list);
                 } else if (words[0].equals("delete")) {
                     if (words.length < 2) {
                         throw new JaneException("Please specify a task number.");
@@ -86,7 +88,7 @@ public class Jane {
                             removed + "\n" +
                             "Now you have " + list.size() + " tasks in the list.\n" +
                             "____________________________________________________________\n");
-
+                    storage.save(list);
                 } else {
                     String[] inputArgs = input.split("\\s?/");
                     String[] mainCmd = inputArgs[0].split("\\s+", 2);
@@ -136,6 +138,7 @@ public class Jane {
                     }
 
                     list.add(task);
+                    storage.save(list);
 
                     System.out.println("____________________________________________________________\n" +
                             "Got it. I've added this task:\n" +
