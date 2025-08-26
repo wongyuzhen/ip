@@ -54,7 +54,7 @@ public class Parser {
         for (int i = 1; i < parts.length; i++) {
             String[] fp = parts[i].trim().split("\\s+", 2);
             if (fp.length < 2) {
-                throw new JaneException("Invalid flag format.");
+                throw new JaneException("Invalid format of time given.");
             }
 
             flags.put(fp[0], fp[1]);
@@ -79,7 +79,7 @@ public class Parser {
                 String from = flags.get("from");
                 String to = flags.get("to");
                 if (from == null || to == null) {
-                    throw new JaneException("Event task must have both /from (date time) and /to (time).");
+                    throw new JaneException("Event task must have both /from and /to times.");
                 }
                 return new EventCommand(desc, from, to);
             }
