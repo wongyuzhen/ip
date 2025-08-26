@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * Handles reading and writing tasks to a file.
- * Provides methods for loading tasks from storage and saving tasks back to the storage file.
+ * Provides methods for loading tasks from storage and saving tasks back to storage file.
  * <p>Tasks are serialized and deserialized from a text-based format to ensure persistence between sessions.</p>
  *
  * <p>This class also ensures that the storage file exists and can create missing directories and files as needed.</p>
