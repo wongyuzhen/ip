@@ -1,3 +1,12 @@
+package jane.command;
+
+import jane.TaskList;
+import jane.Ui;
+import jane.Storage;
+import jane.Task;
+import jane.DateTimeUtil;
+import jane.JaneException;
+
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -12,7 +21,8 @@ public class EventCommand extends Command {
         this.description = description; this.from = fromDT; this.to = toDT;
     }
 
-    @Override public void execute(TaskList tasks, Ui ui, Storage storage) throws JaneException {
+    @Override
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws JaneException {
         Task t = new Task(description, from, to);
         tasks.add(t);
         storage.save(tasks.asArrayList());

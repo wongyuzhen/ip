@@ -1,3 +1,7 @@
+package jane;
+
+import jane.command.*;
+
 import java.util.HashMap;
 
 public class Parser {

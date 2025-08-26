@@ -1,3 +1,11 @@
+package jane.command;
+
+import jane.TaskList;
+import jane.Ui;
+import jane.Storage;
+import jane.Task;
+import jane.JaneException;
+
 public class MarkCommand extends Command {
     private final int index;    // 0-based
     private final boolean done;

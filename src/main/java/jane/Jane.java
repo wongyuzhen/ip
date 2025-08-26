@@ -1,3 +1,7 @@
+package jane;
+
+import jane.command.*;
+
 public class Jane {
 
     private Storage storage;
