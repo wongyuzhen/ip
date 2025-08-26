@@ -1,10 +1,17 @@
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class Task {
     protected String description;
     protected boolean isDone;
     protected TaskType type;
-    protected String deadlineDate;
-    protected String fromTime;
-    protected String toTime;
+
+    // Deadline: LocalDate only
+    protected LocalDate deadlineDate;
+
+    // Event: LocalDateTime for from/to
+    protected LocalDateTime fromTime;
+    protected LocalDateTime toTime;
 
     public Task(String description) {
         this.description = description;
@@ -12,14 +19,14 @@ public class Task {
         this.type = TaskType.TODO;
     }
 
-    public Task(String description, String date) {
+    public Task(String description, LocalDate date) {
         this.description = description;
         this.isDone = false;
         this.type = TaskType.DEADLINE;
         this.deadlineDate = date;
     }
 
-    public Task(String description, String from, String to) {
+    public Task(String description, LocalDateTime from, LocalDateTime to) {
         this.description = description;
         this.isDone = false;
         this.type = TaskType.EVENT;
@@ -50,11 +57,12 @@ public class Task {
                 return "[T][" + this.getStatusIcon() + "] " + description;
             case DEADLINE:
                 return "[D][" + this.getStatusIcon() + "] " + description +
-                        " (by: " + deadlineDate + ")";
+                        " (by: " + DateTimeUtil.formatDate(deadlineDate) + ")";
             case EVENT:
                 return "[E][" + this.getStatusIcon() + "] " + description +
-                        " (from: " + fromTime + " to: " + toTime + ")";
+                        " (from: " + DateTimeUtil.formatDateTime(fromTime) +
+                        " to: " + DateTimeUtil.formatDateTime(toTime)+ ")";
         }
-        return "";
+        return "[" + this.getStatusIcon() + "] " + description;
     }
 }

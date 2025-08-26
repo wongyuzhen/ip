@@ -1,6 +1,8 @@
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -63,31 +65,40 @@ public class Storage {
         switch (t.type) {
             case TODO:
                 return "TODO|" + done + "|" + t.description;
-            case DEADLINE:
-                return "DEADLINE|" + done + "|" + t.description + "|" + t.deadlineDate;
-            case EVENT:
-                return "EVENT|" + done + "|" + t.description + "|" + t.fromTime + "|" + t.toTime;
+            case DEADLINE: {
+                String d = DateTimeUtil.storeDate(t.deadlineDate); // yyyy-MM-dd
+                return "DEADLINE|" + done + "|" + t.description + "|" + d;
+            }
+            case EVENT: {
+                String from = DateTimeUtil.storeDateTime(t.fromTime); // yyyy-MM-dd HHmm
+                String to   = DateTimeUtil.storeDateTime(t.toTime);   // yyyy-MM-dd HHmm
+                return "EVENT|" + done + "|" + t.description + "|" + from + "|" + to;
+            }
             default:
                 throw new IllegalStateException("Unknown task type: " + t.type);
         }
     }
 
     private Task fromStorageString(String s) {
-        String[] parts = s.split("\\|", -1);
-        String type = parts[0];
-        boolean done = "1".equals(parts[1]);
+        String[] p = s.split("\\|", -1);
+        String type = p[0];
+        boolean done = "1".equals(p[1]);
         Task t;
-
         switch (type) {
             case "TODO":
-                t = new Task(parts[2]);
+                t = new Task(p[2]);
                 break;
-            case "DEADLINE":
-                t = new Task(parts[2], parts[3]);
+            case "DEADLINE": {
+                LocalDate d = DateTimeUtil.loadDate(p[3]);
+                t = new Task(p[2], d);
                 break;
-            case "EVENT":
-                t = new Task(parts[2], parts[3], parts[4]);
+            }
+            case "EVENT": {
+                LocalDateTime from = DateTimeUtil.loadDateTime(p[3]);
+                LocalDateTime to   = DateTimeUtil.loadDateTime(p[4]);
+                t = new Task(p[2], from, to);
                 break;
+            }
             default:
                 throw new IllegalArgumentException("Unknown task type: " + type);
         }
