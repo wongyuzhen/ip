@@ -26,7 +26,7 @@ public class Storage {
     }
 
     // Load tasks from storage into chatbot
-    public ArrayList<Task> load() {
+    public ArrayList<Task> load() throws JaneException {
         ArrayList<Task> list = new ArrayList<>();
         try {
             if (!Files.exists(dataFile)) {
@@ -40,14 +40,13 @@ public class Storage {
                 list.add(fromStorageString(line));
             }
         } catch (Exception e) {
-            // If corruption happens, start clean but don't crash the app
-            System.out.println("[Storage] Warning: could not fully load data: " + e.getMessage());
+            throw new JaneException("Could not load tasks from storage.", e);
         }
         return list;
     }
 
     // Save newly created task into storage
-    public void save(List<Task> tasks) {
+    public void save(List<Task> tasks) throws JaneException {
         try {
             ensureFileReady();
             List<String> lines = new ArrayList<>();
@@ -56,7 +55,7 @@ public class Storage {
             }
             Files.write(dataFile, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
         } catch (IOException e) {
-            System.out.println("[Storage] Error saving tasks: " + e.getMessage());
+            throw new JaneException("Could not save tasks to storage.", e);
         }
     }
 
