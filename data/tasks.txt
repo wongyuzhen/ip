@@ -1,2 +1,2 @@
-TODO|1|ts crazy
-EVENT|0|wthelly|Sun 2pm|5pm
+TODO|0|hello
+DEADLINE|0|world|2025-12-12
