@@ -4,7 +4,21 @@ import jane.command.*;
 
 import java.util.HashMap;
 
+/**
+ * Parses the user's input and returns the appropriate Command.
+ * This takes care of recognizing different task-related commands and creating the corresponding command objects.
+ *
+ */
 public class Parser {
+
+    /**
+     * Parses the input command and returns the right Command based on the user’s input.
+     * Recognizes commands like "bye", "list", "mark", "unmark", "delete", and task creation commands.
+     *
+     * @param input The command input.
+     * @return The Command object for the user’s action.
+     * @throws JaneException If the input is invalid or the command can't be processed.
+     */
     public static Command parse(String input) throws JaneException {
         String trimmed = input.trim();
         if (trimmed.isEmpty()) {
@@ -31,6 +45,15 @@ public class Parser {
         }
     }
 
+    /**
+     * Extracts and returns the task index from the input.
+     * If the index is invalid or missing, throws an error.
+     *
+     * @param words The split input command.
+     * @param pos The position of the index in the input.
+     * @return The index as an integer.
+     * @throws JaneException If the index is invalid.
+     */
     private static int parseIndex(String[] words, int pos) throws JaneException {
         if (words.length <= pos) {
             throw new JaneException("Please specify a task number.");
@@ -44,6 +67,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Handles task creation commands like "todo", "deadline", and "event".
+     * Extracts the description and any flags like date/time for deadlines or events.
+     *
+     * @param full The full input string (e.g., "todo read book /by 2022-12-31").
+     * @return The corresponding Command for the task.
+     * @throws JaneException If the input format is invalid or missing required flags.
+     */
     private static Command parseAddLike(String full) throws JaneException {
         String[] parts = full.split("\\s?/");
         String[] head = parts[0].trim().split("\\s+", 2);
