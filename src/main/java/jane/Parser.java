@@ -15,19 +15,23 @@ public class Parser {
         String head = words[0];
 
         switch (head) {
-            case "bye":
-                return new ExitCommand();
-            case "list":
-                return new ListCommand();
-            case "mark":
-                return new MarkCommand(parseIndex(words, 1), true);
-            case "unmark":
-                return new MarkCommand(parseIndex(words, 1), false);
-            case "delete":
-                return new DeleteCommand(parseIndex(words, 1));
-
-            default:
-                return parseAddLike(trimmed);
+        case "bye":
+            return new ExitCommand();
+        case "list":
+            return new ListCommand();
+        case "mark":
+            return new MarkCommand(parseIndex(words, 1), true);
+        case "unmark":
+            return new MarkCommand(parseIndex(words, 1), false);
+        case "delete":
+            return new DeleteCommand(parseIndex(words, 1));
+        case "find":
+            if (words.length < 2) {
+                throw new JaneException("Please specify a search keyword.");
+            }
+            return new FindCommand(trimmed.substring(5));  // The "find" command starts at index 5
+        default:
+            return parseAddLike(trimmed);
         }
     }
 

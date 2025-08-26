@@ -41,7 +41,7 @@ public class Task {
     }
 
     public String getDescription() {
-        return description; // mark done task with X
+        return description;
     }
 
     public void markAsDone() {
