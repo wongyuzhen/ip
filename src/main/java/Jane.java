@@ -1,3 +1,5 @@
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Scanner;
@@ -96,7 +98,7 @@ public class Jane {
                         throw new JaneException("The description of this " + mainCmd[0].toUpperCase() + " task should not be empty.");
                     }
 
-                    HashMap<String, String> flags = new HashMap<String, String>();
+                    HashMap<String, String> flags = new HashMap<>();
                     for (int i = 1; i < inputArgs.length; ++i) {
                         String[] flagParts = inputArgs[i].split("\\s+", 2);
                         if (flagParts.length < 2) {
@@ -123,7 +125,7 @@ public class Jane {
                             if (by.isEmpty()) {
                                 throw new JaneException("Deadline task must have a /by date.");
                             }
-                            task = new Task(mainCmd[1], by);
+                            task = new Task(mainCmd[1], DateTimeUtil.parseDate(by));
                             break;
                         case EVENT:
                             String from = flags.get("from");
@@ -131,7 +133,17 @@ public class Jane {
                             if (from == null || to == null) {
                                 throw new JaneException("Event task must have both /from and /to times.");
                             }
-                            task = new Task(mainCmd[1], from, to);
+                            // /from may be "yyyy-MM-dd HHmm" or "d/M/yyyy HH:mm" etc.
+                            LocalDateTime fromDateTime = DateTimeUtil.parseDateTime(from);
+
+                            // /to is a time only, like "1800" or "18:00"
+                            LocalTime toTimeOnly = DateTimeUtil.parseTime(to);
+                            LocalDateTime toDateTime = LocalDateTime.of(fromDateTime.toLocalDate(), toTimeOnly);
+
+                            if (toDateTime.isBefore(fromDateTime))
+                                throw new JaneException("Event /to time cannot be before /from time.");
+
+                            task = new Task(mainCmd[1], fromDateTime, toDateTime);
                             break;
                         default:
                             throw new JaneException("Unhandled task type: " + mainCmd[0]);

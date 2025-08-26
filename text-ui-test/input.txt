@@ -1,6 +1,6 @@
 todo read book
-deadline submit report /by tomorrow
-event party /from 8pm /to 10pm
+deadline submit report /by 2019-12-02
+event party /from 2019-12-02 2000 /to 2200
 list
 mark 2
 unmark 1
@@ -10,7 +10,7 @@ mark 5
 unmark 0
 todo
 deadline project /by
-event party /from 8pm
-event party /to 10pm
+event party /from 2019-12-02 2000
+event party /to 2200
 unknown task
 bye
