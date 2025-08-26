@@ -110,4 +110,16 @@ public class Ui {
             System.out.println((i + 1) + ". " + tasks.get(i));
         }
     }
+
+    /**
+     * Displays the matching tasks found based on the search keyword.
+     *
+     * @param tasks The list of tasks that match the search keyword.
+     */
+    public void showFoundTasks(TaskList tasks) {
+        System.out.println("Here are the matching tasks in your list:");
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + "." + tasks.get(i));
+        }
+    }
 }

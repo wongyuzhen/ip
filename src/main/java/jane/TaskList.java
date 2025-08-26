@@ -90,5 +90,14 @@ public class TaskList {
         if (done) t.markAsDone(); else t.markAsUndone();
         return t;
     }
+
+    /**
+     * Checks if the task list is empty.
+     *
+     * @return true if the list is empty, false otherwise.
+     */
+    public boolean isEmpty() {
+        return this.list.isEmpty();
+    }
 }
 
