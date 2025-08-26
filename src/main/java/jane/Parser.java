@@ -99,28 +99,25 @@ public class Parser {
         String desc = head[1];
 
         switch (type) {
-            case "todo":
-                return new TodoCommand(desc);
-
-            case "deadline": {
-                String by = flags.getOrDefault("by", "");
-                if (by.isEmpty()) {
-                    throw new JaneException("Deadline task must have a /by date.");
-                }
-                return new DeadlineCommand(desc, by);
+        case "todo":
+            return new TodoCommand(desc);
+        case "deadline": {
+            String by = flags.getOrDefault("by", "");
+            if (by.isEmpty()) {
+                throw new JaneException("Deadline task must have a /by date.");
             }
-
-            case "event": {
-                String from = flags.get("from");
-                String to = flags.get("to");
-                if (from == null || to == null) {
-                    throw new JaneException("Event task must have both /from and /to times.");
-                }
-                return new EventCommand(desc, from, to);
+            return new DeadlineCommand(desc, by);
+        }
+        case "event": {
+            String from = flags.get("from");
+            String to = flags.get("to");
+            if (from == null || to == null) {
+                throw new JaneException("Event task must have both /from and /to times.");
             }
-
-            default:
-                throw new JaneException("Unknown task type: " + head[0]);
+            return new EventCommand(desc, from, to);
+        }
+        default:
+            throw new JaneException("Unknown task type: " + head[0]);
         }
     }
 }
