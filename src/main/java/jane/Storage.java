@@ -8,14 +8,31 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles reading and writing tasks to a file.
+ * Provides methods for loading tasks from storage and saving tasks back to storage file.
+ * <p>Tasks are serialized and deserialized from a text-based format to ensure persistence between sessions.</p>
+ *
+ * <p>This class also ensures that the storage file exists and can create missing directories and files as needed.</p>
+ */
 public class Storage {
     private final Path dataFile;
 
+    /**
+     * Constructs a Storage object with the specified file path.
+     *
+     * @param filePath The path to the storage file.
+     */
     public Storage(String filePath) {
         this.dataFile = Paths.get(filePath);
     }
 
-    // Create directory and storage file if not already in existence
+    /**
+     * Ensures the existence of the storage file and its parent directories.
+     * Creates missing directories and the file itself if they do not already exist.
+     *
+     * @throws IOException If an I/O error occurs during file or directory creation.
+     */
     private void ensureFileReady() throws IOException {
         Path parent = dataFile.getParent();
         if (parent != null && !Files.exists(parent)) {
@@ -27,7 +44,13 @@ public class Storage {
         }
     }
 
-    // Load tasks from storage into chatbot
+    /**
+     * Loads tasks from the storage file.
+     * Reads all lines from the file and deserializes them into Task objects.
+     *
+     * @return An ArrayList of tasks loaded from storage.
+     * @throws JaneException If an error occurs while loading the tasks (e.g., file format issues).
+     */
     public ArrayList<Task> load() throws JaneException {
         ArrayList<Task> list = new ArrayList<>();
         try {
@@ -47,7 +70,13 @@ public class Storage {
         return list;
     }
 
-    // Save newly created task into storage
+    /**
+     * Saves a list of tasks to the storage file.
+     * Each task is serialized into a string and written to the file, replacing any existing content.
+     *
+     * @param tasks The list of tasks to be saved.
+     * @throws JaneException If an error occurs while saving tasks to the file.
+     */
     public void save(List<Task> tasks) throws JaneException {
         try {
             ensureFileReady();
@@ -61,6 +90,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Serializes a task to a string that can be stored in the file.
+     *
+     * @param t The task to be serialized.
+     * @return The string representation of the task for storage.
+     */
     private String toStorageString(Task t) {
         String done = t.isDone ? "1" : "0";
         switch (t.type) {
@@ -80,6 +115,14 @@ public class Storage {
         }
     }
 
+    /**
+     * Deserializes a string into a Task object.
+     * This method assumes the input string is in the correct format for a task (TODO, DEADLINE, EVENT).
+     *
+     * @param s The string to be deserialized.
+     * @return The Task object created from the string.
+     * @throws IllegalArgumentException If the string is in an invalid format.
+     */
     private Task fromStorageString(String s) {
         String[] p = s.split("\\|", -1);
         String type = p[0];
