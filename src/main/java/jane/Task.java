@@ -78,7 +78,7 @@ public class Task {
      * @return The description of the task.
      */
     public String getDescription() {
-        return description; // mark done task with X
+        return description;
     }
 
     /**
