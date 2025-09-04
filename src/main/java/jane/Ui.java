@@ -23,10 +23,10 @@ public class Ui {
      * Displays a friendly welcome message when the app starts.
      */
     public void showWelcome() {
-        System.out.println("____________________________________________________________\n" +
-                "Hello! I'm Jane\n" +
-                "What can I do for you?\n" +
-                "____________________________________________________________\n");
+        System.out.println("____________________________________________________________\n"
+                + "Hello! I'm Jane\n"
+                + "What can I do for you?\n"
+                + "____________________________________________________________\n");
     }
 
     /**
@@ -71,8 +71,8 @@ public class Ui {
      * @param size The current number of tasks in the list.
      */
     public void showAdded(Task t, int size) {
-        System.out.println("Got it. I've added this task:\n" + t +
-                "\nNow you have " + size + " tasks in the list.");
+        System.out.println("Got it. I've added this task:\n" + t
+                + "\nNow you have " + size + " tasks in the list.");
     }
 
     /**
@@ -83,8 +83,8 @@ public class Ui {
      * @param size The current number of tasks after removal.
      */
     public void showRemoved(Task t, int size) {
-        System.out.println("Noted. I've removed this task:\n" + t +
-                "\nNow you have " + size + " tasks in the list.");
+        System.out.println("Noted. I've removed this task:\n" + t
+                + "\nNow you have " + size + " tasks in the list.");
     }
 
     /**
@@ -95,8 +95,8 @@ public class Ui {
      * @param done The status of the task (true if done, false if undone).
      */
     public void showMarked(Task t, boolean done) {
-        System.out.println((done ? "Nice! I've marked this task as done:\n" :
-                "OK, I've marked this task as not done yet:\n") + t);
+        System.out.println((done ? "Nice! I've marked this task as done:\n"
+                : "OK, I've marked this task as not done yet:\n") + t);
     }
 
     /**
