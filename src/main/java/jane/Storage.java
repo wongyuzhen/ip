@@ -52,24 +52,23 @@ public class Storage {
      * @throws JaneException If an error occurs while loading the tasks (e.g., file format issues).
      */
     public ArrayList<Task> load() throws JaneException {
-        ArrayList<Task> list = new ArrayList<>();
         try {
-            if (!Files.exists(dataFile)) {
-                ensureFileReady();
-                return list;
-            }
-            List<String> lines = Files.readAllLines(dataFile, StandardCharsets.UTF_8);
-            for (String line : lines) {
-                line = line.trim();
-                if (line.isEmpty()) {
-                    continue;
-                }
-                list.add(fromStorageString(line));
+            ensureFileReady();
+
+            try (java.util.stream.Stream<String> lines =
+                         java.nio.file.Files.lines(dataFile, java.nio.charset.StandardCharsets.UTF_8)) {
+
+                java.util.List<Task> tasks = lines
+                        .map(String::trim)
+                        .filter(s -> !s.isEmpty())
+                        .map(this::fromStorageString)
+                        .toList();
+
+                return new java.util.ArrayList<>(tasks);
             }
         } catch (Exception e) {
             throw new JaneException("Could not load tasks from storage.", e);
         }
-        return list;
     }
 
     /**
@@ -81,13 +80,20 @@ public class Storage {
      */
     public void save(List<Task> tasks) throws JaneException {
         try {
+            assert tasks != null : "Tasks to save must not be null";
             ensureFileReady();
-            List<String> lines = new ArrayList<>();
-            for (Task task : tasks) {
-                lines.add(toStorageString(task));
-            }
-            Files.write(dataFile, lines, StandardCharsets.UTF_8, StandardOpenOption.TRUNCATE_EXISTING);
-        } catch (IOException e) {
+
+            java.util.List<String> lines = tasks.stream()
+                    .map(this::toStorageString)
+                    .collect(java.util.stream.Collectors.toList());
+
+            java.nio.file.Files.write(
+                    dataFile,
+                    lines,
+                    java.nio.charset.StandardCharsets.UTF_8,
+                    java.nio.file.StandardOpenOption.TRUNCATE_EXISTING
+            );
+        } catch (java.io.IOException e) {
             throw new JaneException("Could not save tasks to storage.", e);
         }
     }
