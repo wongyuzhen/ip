@@ -43,7 +43,7 @@ public class Parser {
             if (words.length < 2) {
                 throw new JaneException("Please specify a search keyword.");
             }
-            return new FindCommand(trimmed.substring(5));  // The "find" command starts at index 5
+            return new FindCommand(trimmed.substring(5)); // The "find" command starts at index 5
         default:
             return parseAddLike(trimmed);
         }
@@ -65,8 +65,7 @@ public class Parser {
 
         try {
             return Integer.parseInt(words[pos]) - 1;
-        }
-        catch (NumberFormatException e) {
+        } catch (NumberFormatException e) {
             throw new JaneException("Invalid task number: " + words[pos]);
         }
     }
@@ -89,7 +88,7 @@ public class Parser {
             );
         }
 
-        HashMap<String,String> flags = new HashMap<>();
+        HashMap<String, String> flags = new HashMap<>();
         for (int i = 1; i < parts.length; i++) {
             String[] fp = parts[i].trim().split("\\s+", 2);
             if (fp.length < 2) {

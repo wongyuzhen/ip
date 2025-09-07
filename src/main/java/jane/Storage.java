@@ -64,7 +64,7 @@ public class Storage {
                         .map(this::fromStorageString)
                         .toList();
 
-                return new java.util.ArrayList<>(tasks); // method signature requires ArrayList
+                return new java.util.ArrayList<>(tasks);
             }
         } catch (Exception e) {
             throw new JaneException("Could not load tasks from storage.", e);
@@ -107,19 +107,19 @@ public class Storage {
     private String toStorageString(Task t) {
         String done = t.isDone ? "1" : "0";
         switch (t.type) {
-            case TODO:
-                return "TODO|" + done + "|" + t.description;
-            case DEADLINE: {
-                String d = DateTimeUtil.storeDate(t.deadlineDate); // yyyy-MM-dd
-                return "DEADLINE|" + done + "|" + t.description + "|" + d;
-            }
-            case EVENT: {
-                String from = DateTimeUtil.storeDateTime(t.fromTime); // yyyy-MM-dd HHmm
-                String to   = DateTimeUtil.storeDateTime(t.toTime);   // yyyy-MM-dd HHmm
-                return "EVENT|" + done + "|" + t.description + "|" + from + "|" + to;
-            }
-            default:
-                throw new IllegalStateException("Unknown task type: " + t.type);
+        case TODO:
+            return "TODO|" + done + "|" + t.description;
+        case DEADLINE: {
+            String d = DateTimeUtil.storeDate(t.deadlineDate); // yyyy-MM-dd
+            return "DEADLINE|" + done + "|" + t.description + "|" + d;
+        }
+        case EVENT: {
+            String from = DateTimeUtil.storeDateTime(t.fromTime); // yyyy-MM-dd HHmm
+            String to = DateTimeUtil.storeDateTime(t.toTime); // yyyy-MM-dd HHmm
+            return "EVENT|" + done + "|" + t.description + "|" + from + "|" + to;
+        }
+        default:
+            throw new IllegalStateException("Unknown task type: " + t.type);
         }
     }
 
@@ -137,24 +137,26 @@ public class Storage {
         boolean done = "1".equals(p[1]);
         Task t;
         switch (type) {
-            case "TODO":
-                t = new Task(p[2]);
-                break;
-            case "DEADLINE": {
-                LocalDate d = DateTimeUtil.loadDate(p[3]);
-                t = new Task(p[2], d);
-                break;
-            }
-            case "EVENT": {
-                LocalDateTime from = DateTimeUtil.loadDateTime(p[3]);
-                LocalDateTime to   = DateTimeUtil.loadDateTime(p[4]);
-                t = new Task(p[2], from, to);
-                break;
-            }
-            default:
-                throw new IllegalArgumentException("Unknown task type: " + type);
+        case "TODO":
+            t = new Task(p[2]);
+            break;
+        case "DEADLINE": {
+            LocalDate d = DateTimeUtil.loadDate(p[3]);
+            t = new Task(p[2], d);
+            break;
         }
-        if (done) t.markAsDone();
+        case "EVENT": {
+            LocalDateTime from = DateTimeUtil.loadDateTime(p[3]);
+            LocalDateTime to = DateTimeUtil.loadDateTime(p[4]);
+            t = new Task(p[2], from, to);
+            break;
+        }
+        default:
+            throw new IllegalArgumentException("Unknown task type: " + type);
+        }
+        if (done) {
+            t.markAsDone();
+        }
         return t;
     }
 }

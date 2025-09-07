@@ -104,16 +104,17 @@ public class Task {
     @Override
     public String toString() {
         switch (type) {
-            case TODO:
-                return "[T][" + this.getStatusIcon() + "] " + description;
-            case DEADLINE:
-                return "[D][" + this.getStatusIcon() + "] " + description +
-                        " (by: " + DateTimeUtil.formatDate(deadlineDate) + ")";
-            case EVENT:
-                return "[E][" + this.getStatusIcon() + "] " + description +
-                        " (from: " + DateTimeUtil.formatDateTime(fromTime) +
-                        " to: " + DateTimeUtil.formatDateTime(toTime)+ ")";
+        case TODO:
+            return "[T][" + this.getStatusIcon() + "] " + description;
+        case DEADLINE:
+            return "[D][" + this.getStatusIcon() + "] " + description
+                    + " (by: " + DateTimeUtil.formatDate(deadlineDate) + ")";
+        case EVENT:
+            return "[E][" + this.getStatusIcon() + "] " + description
+                    + " (from: " + DateTimeUtil.formatDateTime(fromTime)
+                    + " to: " + DateTimeUtil.formatDateTime(toTime) + ")";
+        default:
+            return "Incorrect task type";
         }
-        return "[" + this.getStatusIcon() + "] " + description;
     }
 }

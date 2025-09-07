@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.util.Objects;
+
 /**
  * Controller for the main GUI.
  */
@@ -25,8 +27,12 @@ public class MainWindow extends AnchorPane {
 
     private JaneGui jane;
 
-    private Image userImage = new Image(this.getClass().getResourceAsStream("/images/DaUser.png"));
-    private Image janeImage = new Image(this.getClass().getResourceAsStream("/images/DaJane.png"));
+    private final Image userImage = new Image(
+            Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaUser.png"))
+    );
+    private final Image janeImage = new Image(
+            Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaJane.png"))
+    );
 
     @FXML
     public void initialize() {
@@ -35,9 +41,12 @@ public class MainWindow extends AnchorPane {
 
     /** Injects the Jane instance */
     public void setJane(JaneGui j) {
+        assert j != null : "Injected JaneGui must not be null";
         jane = j;
 
         String greeting = jane.getWelcome();
+        assert greeting != null && !greeting.isEmpty() : "Greeting should not be empty";
+
         dialogContainer.getChildren().add(
                 DialogBox.getJaneDialog(greeting, janeImage)
         );
@@ -49,8 +58,13 @@ public class MainWindow extends AnchorPane {
      */
     @FXML
     private void handleUserInput() {
+        assert jane != null : "JaneGui must be injected before handling input";
+
         String input = userInput.getText();
+        assert input != null : "TextField should not return null";
+
         String response = jane.getResponse(input);
+        assert response != null : "Jane response must not be null";
 
         boolean shouldExit = response.startsWith("[EXIT]");
         if (shouldExit) {

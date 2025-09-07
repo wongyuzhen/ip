@@ -1,11 +1,11 @@
 import java.io.IOException;
 
+import jane.JaneGui;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
-import jane.JaneGui;
 
 /**
  * A GUI for Jane using FXML.
@@ -23,7 +23,7 @@ public class Main extends Application {
             stage.setScene(scene);
             stage.setMinHeight(220);
             stage.setMinWidth(417);
-            fxmlLoader.<MainWindow>getController().setJane(jane);  // inject JaneGui
+            fxmlLoader.<MainWindow>getController().setJane(jane); // inject JaneGui
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
