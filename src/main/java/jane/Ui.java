@@ -122,4 +122,17 @@ public class Ui {
             System.out.println((i + 1) + "." + tasks.get(i));
         }
     }
+
+    public void showReminders(TaskList tasks, java.time.LocalDateTime from, java.time.LocalDateTime to,
+                              java.time.format.DateTimeFormatter fmt) {
+        System.out.println("Upcoming tasks between " + from.format(fmt) + " and " + to.format(fmt) + ":");
+        if (tasks.size() == 0) {
+            System.out.println("None.");
+            return;
+        }
+        for (int i = 0; i < tasks.size(); i++) {
+            System.out.println((i + 1) + ". " + tasks.get(i));
+        }
+    }
+
 }

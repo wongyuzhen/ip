@@ -1,9 +1,9 @@
 package jane.command;
 
-import jane.TaskList;
-import jane.Ui;
 import jane.Storage;
 import jane.Task;
+import jane.TaskList;
+import jane.Ui;
 
 public class FindCommand extends Command {
     private final String keyword;

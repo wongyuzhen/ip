@@ -73,5 +73,17 @@ public class GuiUi extends Ui {
         }
     }
 
-    // readCommand() not used in GUI
+    @Override
+    public void showReminders(TaskList tasks, java.time.LocalDateTime from, java.time.LocalDateTime to,
+                              java.time.format.DateTimeFormatter fmt) {
+        appendLines("Upcoming tasks between " + from.format(fmt) + " and " + to.format(fmt) + ":");
+        if (tasks.size() == 0) {
+            appendLines("None.");
+            return;
+        }
+        for (int i = 0; i < tasks.size(); i++) {
+            appendLines((i + 1) + ". " + tasks.get(i));
+        }
+    }
+
 }

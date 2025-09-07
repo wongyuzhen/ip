@@ -1,5 +1,8 @@
 package jane;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
 
 /**
@@ -102,6 +105,46 @@ public class TaskList {
      */
     public boolean isEmpty() {
         return this.list.isEmpty();
+    }
+
+    /**
+     * Returns a new TaskList containing tasks that occur within [start, end].
+     * - DEADLINE (LocalDate): included if the date is between start.date and end.date (inclusive).
+     * - EVENT (LocalDateTime from/to): included if the time window overlaps with [start, end].
+     * - TODO: excluded (no date).
+     */
+    public TaskList within(LocalDateTime start, LocalDateTime end) {
+        ArrayList<Task> filtered = new ArrayList<>();
+        for (int i = 0; i < size(); i++) {
+            Task t = get(i);
+            switch (t.type) {
+            case DEADLINE: {
+                LocalDate d = t.deadlineDate; // non-null per your model
+                if (d != null) {
+                    // Treat deadline as due by end-of-day
+                    LocalDateTime ddl = LocalDateTime.of(d, LocalTime.of(23, 59, 59));
+                    if (!ddl.isBefore(start) && !ddl.isAfter(end)) {
+                        filtered.add(t);
+                    }
+                }
+                break;
+            }
+            case EVENT: {
+                // Overlap test: [from,to] overlaps [start,end] iff from <= end && to >= start
+                if (t.fromTime != null && t.toTime != null) {
+                    if (!t.fromTime.isAfter(end) && !t.toTime.isBefore(start)) {
+                        filtered.add(t);
+                    }
+                }
+                break;
+            }
+            case TODO:
+            default:
+                // skip items without time info
+                break;
+            }
+        }
+        return new TaskList(filtered);
     }
 }
 

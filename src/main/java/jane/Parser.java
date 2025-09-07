@@ -3,6 +3,8 @@ package jane;
 import jane.command.*;
 
 import java.util.HashMap;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Parses the user's input and returns the appropriate Command.
@@ -40,10 +42,9 @@ public class Parser {
         case "delete":
             return new DeleteCommand(parseIndex(words, 1));
         case "find":
-            if (words.length < 2) {
-                throw new JaneException("Please specify a search keyword.");
-            }
-            return new FindCommand(trimmed.substring(5)); // The "find" command starts at index 5
+            return parseFind(trimmed, words);
+        case "remindme":
+            return parseRemind(trimmed);
         default:
             return parseAddLike(trimmed);
         }
@@ -122,5 +123,27 @@ public class Parser {
         default:
             throw new JaneException("Unknown task type: " + head[0]);
         }
+    }
+
+    private static Command parseFind(String full, String[] words) throws JaneException {
+        if (words.length < 2) {
+            throw new JaneException("Please specify a search keyword.");
+        }
+        return new FindCommand(full.substring(5)); // "find " = 5 chars
+    }
+
+    private static Command parseRemind(String full) throws JaneException {
+        int weeks = 1; // default
+        String tail = full.substring("remindme".length()).trim();
+
+        if (!tail.isEmpty()) {
+            Matcher m = Pattern.compile("^/\\s*(\\d+)\\s*weeks?$", Pattern.CASE_INSENSITIVE).matcher(tail);
+            if (m.find()) {
+                weeks = Integer.parseInt(m.group(1));
+            } else {
+                throw new JaneException("Usage: remindme [/N weeks]");
+            }
+        }
+        return new RemindCommand(Math.max(1, weeks));
     }
 }
