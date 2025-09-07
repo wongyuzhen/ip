@@ -87,7 +87,11 @@ public class TaskList {
      */
     public Task mark(int idx, boolean done) {
         Task t = list.get(idx);
-        if (done) t.markAsDone(); else t.markAsUndone();
+        if (done) {
+            t.markAsDone();
+        } else {
+            t.markAsUndone();
+        }
         return t;
     }
 

@@ -7,8 +7,12 @@ package jane;
 public class GuiUi extends Ui {
     private final StringBuilder buf = new StringBuilder();
 
-    public void clear() { buf.setLength(0); }
-    public String output() { return buf.toString().trim(); }
+    public void clear() {
+        buf.setLength(0);
+    }
+    public String output() {
+        return buf.toString().trim();
+    }
 
     private void appendLines(String... lines) {
         for (String line : lines) {
