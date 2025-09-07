@@ -10,11 +10,15 @@ repositories {
 
 application {
     mainClass.set("Launcher")
+    applicationDefaultJvmArgs = ['-ea']
+}
+
+tasks.withType(Test).configureEach {
+    jvmArgs '-ea'   // also enable for `gradle test`
 }
 
 shadowJar {
-    archiveBaseName = "javafx-jane"
-    archiveClassifier = null
+    archiveBaseName = "Jane.jar"
 }
 
 dependencies {
