@@ -16,6 +16,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage stage) {
+        // App/window title shows up in screenshots and task switchers.
+        stage.setTitle("Jane the Chatbot");
+
         try {
             FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/view/MainWindow.fxml"));
             AnchorPane ap = fxmlLoader.load();
