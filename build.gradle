@@ -39,5 +39,7 @@ tasks.withType(Test).configureEach {
 }
 
 shadowJar {
-    archiveBaseName = "Jane.jar"
+    archiveBaseName.set('jane')
+    archiveClassifier.set('')
+    archiveVersion.set('')
 }
