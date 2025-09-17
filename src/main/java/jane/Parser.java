@@ -1,25 +1,26 @@
 package jane;
 
-import jane.command.*;
-
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import jane.command.*;
+
 /**
- * Parses the user's input and returns the appropriate Command.
- * This takes care of recognizing different task-related commands and creating the corresponding command objects.
+ * Responsible for parsing raw user input into executable {@link Command} objects.
  *
+ * <p>The {@code Parser} interprets different types of task-related commands,
+ * such as adding, deleting, marking, finding, and reminders, and delegates
+ * execution to the appropriate {@code Command} subclass.</p>
  */
 public class Parser {
 
     /**
-     * Parses the input command and returns the right Command based on the user’s input.
-     * Recognizes commands like "bye", "list", "mark", "unmark", "delete", and task creation commands.
+     * Parses a line of user input and produces the corresponding {@link Command}.
      *
-     * @param input The command input.
-     * @return The Command object for the user’s action.
-     * @throws JaneException If the input is invalid or the command can't be processed.
+     * @param input raw user input string
+     * @return a {@link Command} representing the action to execute
+     * @throws JaneException if the input is invalid or the command is not recognized
      */
     public static Command parse(String input) throws JaneException {
         String trimmed = input.trim();
@@ -125,6 +126,14 @@ public class Parser {
         }
     }
 
+    /**
+     * Parses a {@code find} command that searches tasks by keyword.
+     *
+     * @param full  full user input
+     * @param words split user input
+     * @return a {@link FindCommand} with the search term
+     * @throws JaneException if no keyword is provided
+     */
     private static Command parseFind(String full, String[] words) throws JaneException {
         if (words.length < 2) {
             throw new JaneException("Please specify a search keyword.");
@@ -132,6 +141,13 @@ public class Parser {
         return new FindCommand(full.substring(5)); // "find " = 5 chars
     }
 
+    /**
+     * Parses a {@code remindme} command with an optional number of weeks.
+     *
+     * @param full full user input
+     * @return a {@link RemindCommand} with the requested duration
+     * @throws JaneException if the format is invalid
+     */
     private static Command parseRemind(String full) throws JaneException {
         int weeks = 1; // default
         String tail = full.substring("remindme".length()).trim();

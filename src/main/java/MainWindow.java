@@ -1,3 +1,5 @@
+import java.util.Objects;
+
 import jane.JaneGui;
 import javafx.animation.PauseTransition;
 import javafx.fxml.FXML;
@@ -10,10 +12,11 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-import java.util.Objects;
-
 /**
- * Controller for the main GUI.
+ * Controller for the main chat window defined in {@code MainWindow.fxml}.
+ *
+ * <p>Handles user input, displays dialog bubbles for the user and Jane, and
+ * gracefully exits when Jane requests termination.</p>
  */
 public class MainWindow extends AnchorPane {
     @FXML
@@ -34,12 +37,23 @@ public class MainWindow extends AnchorPane {
             Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaJane.png"))
     );
 
+    /**
+     * Called by the JavaFX runtime after FXML fields are injected.
+     *
+     * <p>Binds the scroll pane to auto-scroll when new dialog nodes are appended.</p>
+     */
     @FXML
     public void initialize() {
         scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
     }
 
-    /** Injects the Jane instance */
+    /**
+     * Injects the {@link JaneGui} instance used to service user requests and
+     * renders Jane's greeting as the first message.
+     *
+     * @param j non-null Jane facade
+     * @throws AssertionError if {@code j} is {@code null} or the greeting is empty
+     */
     public void setJane(JaneGui j) {
         assert j != null : "Injected JaneGui must not be null";
         jane = j;
@@ -78,7 +92,7 @@ public class MainWindow extends AnchorPane {
         userInput.clear();
 
         if (shouldExit) {
-            // Close after 5 seconds
+            // Close after 2 seconds
             PauseTransition delay = new PauseTransition(Duration.seconds(2));
             delay.setOnFinished(event -> {
                 Stage stage = (Stage) scrollPane.getScene().getWindow();

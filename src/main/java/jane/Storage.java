@@ -1,7 +1,6 @@
 package jane;
 
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

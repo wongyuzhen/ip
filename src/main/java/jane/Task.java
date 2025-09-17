@@ -6,7 +6,7 @@ import java.time.LocalDateTime;
 /**
  * Represents a task with a description, completion status, and type.
  * Tasks can be of type TODO, DEADLINE, or EVENT, and include information such as a due date or event timing.
- * <p>This class allows the task to be marked as done or undone and provides a method to format the task for display.</p>
+ * <p>This class allows the task to be marked as done/undone and provides a method to format the task for display.</p>
  */
 public class Task {
     protected String description;

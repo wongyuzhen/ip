@@ -7,13 +7,22 @@ import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
+
 /**
- * A GUI for Jane using FXML.
+ * Entry point for the Jane chatbot GUI application (JavaFX).
+ *
+ * <p>Loads the main window from FXML, wires the {@link JaneGui} backend into the
+ * controller, and shows the primary stage.</p>
  */
 public class Main extends Application {
 
-    private JaneGui jane = new JaneGui("./data/tasks.txt");
+    private final JaneGui jane = new JaneGui("./data/tasks.txt");
 
+    /**
+     * Initializes and displays the primary JavaFX stage.
+     *
+     * @param stage the primary stage provided by the JavaFX runtime
+     */
     @Override
     public void start(Stage stage) {
         // App/window title shows up in screenshots and task switchers.
