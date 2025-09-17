@@ -148,7 +148,7 @@ public class GuiUi extends Ui {
     ) {
         appendLines(
                 "Attention! Time wizard Jane has spoken.",
-                "Between " + from.format(fmt) + " and " + to.format(fmt) + ", here’s what destiny holds:"
+                "Between " + from.format(fmt) + " and " + to.format(fmt) + ", here's what destiny holds:"
         );
         if (tasks.size() == 0) {
             appendLines("Absolutely nothing. Go touch some grass.");
