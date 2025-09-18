@@ -33,22 +33,22 @@ You are now juggling 1 thingamajig. Try not to drop them!
 
 Action: Add a task that must be completed by a certain date/time.
 
-Usage: `deadline DESCRIPTION /by DATE [TIME]`
+Usage: `deadline DESCRIPTION /by DATE`
 
-Example: `deadline CS1008 assignment /by 2025-09-30 23:59`
+Example: `deadline CS1008 assignment /by 2025-09-30`
 
 Outcome:
 ```
 KABOOM! A wild task has appeared:
-[D][ ] CS1008 assignment (by: Sep 30 2025, 11:59 PM)
+[D][ ] CS1008 assignment (by: Sep 30 2025)
 You are now juggling 2 thingamajigs. Try not to drop them!
 ```
 
-## 3. Add Deadline
+## 3. Add Event
 
 Action: Add a task with start and end date/time.
 
-Usage: `event DESCRIPTION /from DATE [TIME] /to DATE [TIME]`
+Usage: `event DESCRIPTION /from DATE TIME /to DATE TIME`
 
 Example: `event hackathon /from 2025-10-10 09:00 /to 2025-10-11 18:00`
 
@@ -162,9 +162,9 @@ Remaining loot: 2 quests. Choose wisely.
 
 Action: Show tasks happening within the next N weeks (default 1).
 
-Usage: `remindme [WEEKS]`
+Usage: `remindme /[NUMBER OF WEEKS] weeks`
 
-Example: `remindme 2`
+Example: `remindme /2 weeks`
 
 Outcome:
 ```
