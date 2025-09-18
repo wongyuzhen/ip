@@ -111,6 +111,9 @@ public class Parser {
             if (by.isEmpty()) {
                 throw new JaneException("Deadline task must have a /by date.");
             }
+            if (by.trim().contains(" ")) {
+                throw new JaneException("Deadline tasks should only have a date, not a time.");
+            }
             return new DeadlineCommand(desc, by);
         }
         case "event": {
