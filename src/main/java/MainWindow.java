@@ -34,7 +34,7 @@ public class MainWindow extends AnchorPane {
             Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaUser.png"))
     );
     private final Image janeImage = new Image(
-            Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaJane.png"))
+            Objects.requireNonNull(this.getClass().getResourceAsStream("/images/DaJane.jpg"))
     );
 
     /**
